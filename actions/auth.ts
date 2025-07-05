@@ -152,3 +152,28 @@ export async function forgotPassword(formData: FormData) {
         status: "success"
     };
 }
+
+export async function resetPassword(formData: FormData, code: string) {
+    const supabase = await createClient();
+    const { error: codeError } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (codeError) {
+        return {
+            status: codeError?.message
+        };
+    }
+    
+    const{ error } = await supabase.auth.updateUser({
+        password: formData.get("password") as string,
+    });
+
+    if (error) {
+        return {
+            status: error?.message
+        };
+    }
+
+    return {
+        status: "success"
+    };
+}
