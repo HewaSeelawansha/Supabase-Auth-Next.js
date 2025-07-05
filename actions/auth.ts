@@ -85,7 +85,7 @@ export async function signIn(formData: FormData){
 
     if(!existingUser) {
         const { error: insertError } = await supabase.from("user_profiles").insert({
-            email: data?.user.email,
+            email: data?.user?.email,
             username: data?.user?.user_metadata?.username,
         });
         if (insertError) {
